@@ -1,0 +1,50 @@
+version: '3'
+services:
+  # MongoDB: https://hub.docker.com/_/mongo/
+  mongodb:
+    image: mongo:3
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  gray:
+    image: graylog/graylog:3.1
+    environment:
+      # CHANGE ME (must be at least 16 characters)!
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      #- GRAYLOG_HTTP_BIND_ADDRESS=192.168.2.16:9002
+      - GRAYLOG_HTTP_PUBLISH_URI=http://localhost:9002/
+      #- GRAYLOG_HTTP_EXTERNAL_URI=http://192.168.2.16:9002/
+      #- GRAYLOG_WEB_ENDPOINT_URI=http//192.168.2.16:9000/api
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      #- GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+    links:
+      - mongodb:mongo
+      - elastic
+    depends_on:
+      - mongodb
+      - elastic
+    ports:
+      # Graylog web interface and REST API
+      - 9002:9002
+      # Syslog TCP
+      - 1514:1514
+      # Syslog UDP
+      - 1514:1514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp

@@ -1,0 +1,13 @@
+  kind: "Endpoints"
+  apiVersion: "v1"
+  metadata:
+    name: "external-web" 
+  subsets: 
+    -
+      addresses:
+        -
+          ip: "192.168.2.24" #The IP Address of the external web server
+      ports:
+        -
+          port: 81
+          name: "nginx"

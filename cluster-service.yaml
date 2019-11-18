@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    name: nginx
+spec:
+ selector:
+   pod: nginx
+ externalIPs:
+    - 192.168.2.24
+ type: ClusterIP
+ ports: 
+ - name: http
+   port: 81

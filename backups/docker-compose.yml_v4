@@ -1,0 +1,70 @@
+# Последняя версия docker-compose
+version: '3'
+
+# Создаем общую сеть deafult для всех контейнеров
+networks:
+  default:
+    driver: bridge
+
+# Создаем отдельные контейнеры
+services:
+  nginx:
+     image: openresty/openresty:alpine
+     # Показываем наружу 81 порт
+     links:
+        - app
+     ports:
+        - "81:80"
+     volumes:
+        - "../toirus-srv:/var/www/toirus-srv"
+      # Так же линкуем конфиг для nginx
+        - "./conf/nginx:/etc/nginx/conf.d"      
+  # Контейнер с веб-приложением
+  app:
+    #container_name: shtrm/toirus:v5.3
+    image: php:fpm
+    build: 
+      # Корнем указываем корень основного проекта
+      context: toirus-srv
+      dockerfile: /Users/mac/work/docker/toirus
+    networks: 
+      - default
+    #links:
+    #  - nginx
+    # Запускаем только после db
+    depends_on: 
+      - db    
+    # Линкуем внешнюю папку с исходниками внутрь
+    volumes:
+      - "../toirus-srv:/var/www/toirus-srv"
+      - "./conf/nginx:/etc/nginx/conf.d"
+  db:
+    image: mysql:8.0.13
+    #command: --lower_case_table_names=2
+    # Подключаем к общей сети с другими контейнерами
+    networks: 
+      - default
+    # Показываем наружу порт
+    ports:
+      - "3336:3306"
+    # Задаем параметры для инициализации БД
+    environment:
+      # Пароль к БД
+      MYSQL_ROOT_PASSWORD: root8888
+      # Создаваемая по умолчанию бд
+      MYSQL_DATABASE: db73
+    # Линкуем внешнюю папку для хранения БД
+    volumes:
+    - "/usr/local/var/mysql8:/var/lib/mysql"
+    - "./conf/mysql:/etc/mysql/conf.d"
+  # Контейнер с redis
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "/usr/local/var/db/redis:/data"
+    entrypoint: redis-server --appendonly yes
+    restart: always
+    

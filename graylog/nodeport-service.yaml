@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-node
+spec:
+ selector:
+   app: gray
+ type: NodePort
+ ports: 
+ - name: http
+   port: 9002
+   targetPort: 9002
+   protocol: TCP
+ externalIPs:
+    - 192.168.2.24

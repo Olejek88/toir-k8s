@@ -1,0 +1,11 @@
+# Базовый образ с nginx и php
+FROM richarvey/nginx-php-fpm
+
+# Добавляем наше веб приложение
+ADD /Users/mac/work/docker/conf/nginx/default.conf /var/www/toirus-srv
+
+# Удаляем конфиги сайтов которые там есть
+#RUN rm -Rf /usr/local/etc/nginx/servers/*
+
+# Добавляем наш конфиг
+#ADD docker/conf/nginx/host.conf /usr/local/etc/nginx/servers/site.conf
