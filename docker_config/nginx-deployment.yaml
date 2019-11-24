@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert --volumes hostPath
+    kompose.cmd: kompose convert
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert --volumes hostPath
+        kompose.cmd: kompose convert
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
@@ -29,15 +29,15 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /var/www/toirus-srv
-          name: nginx-hostpath0
+          name: nginx-claim0
         - mountPath: /etc/nginx/conf.d
-          name: nginx-hostpath1
+          name: nginx-claim1
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /Users/mac/work/docker/Users/mac/work/toirus-srv
-        name: nginx-hostpath0
-      - hostPath:
-          path: /Users/mac/work/docker/Users/mac/work/docker/conf/nginx
-        name: nginx-hostpath1
+      - name: nginx-claim0
+        persistentVolumeClaim:
+          claimName: nginx-claim0
+      - name: nginx-claim1
+        persistentVolumeClaim:
+          claimName: nginx-claim1
 status: {}

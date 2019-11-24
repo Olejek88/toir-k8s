@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert --volumes hostPath
+    kompose.cmd: kompose convert
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert --volumes hostPath
+        kompose.cmd: kompose convert
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
@@ -33,10 +33,10 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /data
-          name: redis-hostpath0
+          name: redis-claim0
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /Users/mac/work/docker/usr/local/var/db/redis
-        name: redis-hostpath0
+      - name: redis-claim0
+        persistentVolumeClaim:
+          claimName: redis-claim0
 status: {}

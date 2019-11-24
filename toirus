@@ -61,8 +61,8 @@ RUN docker-php-ext-configure gd \
 RUN apt-get install -y iputils-ping
 
 # Добавляем наше веб приложение
-WORKDIR /Users/mac/work/docker/
-COPY conf/nginx/default.conf /etc/nginx/conf.d/
+# WORKDIR /Users/mac/work/docker/
+# COPY /Users/mac/work/docker/conf/nginx/default.conf /etc/nginx/conf.d/
 
 #ADD ./ /var/www/toirus-srv
 

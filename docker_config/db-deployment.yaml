@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert --volumes hostPath
+    kompose.cmd: kompose convert
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert --volumes hostPath
+        kompose.cmd: kompose convert
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
@@ -34,15 +34,15 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /var/lib/mysql
-          name: db-hostpath0
+          name: db-claim0
         - mountPath: /etc/mysql/conf.d
-          name: db-hostpath1
+          name: db-claim1
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /Users/mac/work/docker/usr/local/var/mysql8
-        name: db-hostpath0
-      - hostPath:
-          path: /Users/mac/work/docker/Users/mac/work/docker/conf/mysql
-        name: db-hostpath1
+      - name: db-claim0
+        persistentVolumeClaim:
+          claimName: db-claim0
+      - name: db-claim1
+        persistentVolumeClaim:
+          claimName: db-claim1
 status: {}

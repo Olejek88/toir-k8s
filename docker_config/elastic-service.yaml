@@ -6,14 +6,17 @@ metadata:
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
-    io.kompose.service: db
-  name: db
+    io.kompose.service: elastic
+  name: elastic
 spec:
   ports:
-  - name: "3336"
-    port: 3336
-    targetPort: 3306
+  - name: "9200"
+    port: 9200
+    targetPort: 9200
+  - name: "9300"
+    port: 9300
+    targetPort: 9300
   selector:
-    io.kompose.service: db
+    io.kompose.service: elastic
 status:
   loadBalancer: {}

@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gray
+  name: gray
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: gray
+    spec:
+      containers:
+      - env:
+        - name: GRAYLOG_HTTP_PUBLISH_URI
+          value: http://localhost:9002/
+        - name: GRAYLOG_PASSWORD_SECRET
+          value: somepasswordpepper
+        - name: GRAYLOG_ROOT_PASSWORD_SHA2
+          value: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+        image: graylog/graylog:3.1
+        name: gray
+        ports:
+        - containerPort: 9002
+        - containerPort: 1514
+        - containerPort: 1514
+          protocol: UDP
+        - containerPort: 12201
+        - containerPort: 12201
+          protocol: UDP
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -6,12 +6,11 @@ metadata:
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
-    io.kompose.service: app
-  name: app
+    io.kompose.service: mongodb
+  name: mongodb
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
+  strategy: {}
   template:
     metadata:
       annotations:
@@ -19,20 +18,11 @@ spec:
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
-        io.kompose.service: app
+        io.kompose.service: mongodb
     spec:
       containers:
-      - image: shtrm/toirus:v5.3
-        name: app
-        ports:
-        - containerPort: 9000
+      - image: mongo:3
+        name: mongodb
         resources: {}
-        volumeMounts:
-        - mountPath: /var/www/toirus-srv
-          name: app-claim0
       restartPolicy: Always
-      volumes:
-      - name: app-claim0
-        persistentVolumeClaim:
-          claimName: app-claim0
 status: {}
