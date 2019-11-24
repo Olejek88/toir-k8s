@@ -21,7 +21,7 @@ spec:
         io.kompose.service: node
     spec:
       containers:
-      - image: node-alpine
+      - image: shtrm/toirus-cp:v1.1
         name: node
         ports:
         - containerPort: 3000

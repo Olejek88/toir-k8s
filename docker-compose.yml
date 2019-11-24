@@ -65,7 +65,7 @@ services:
     entrypoint: redis-server --appendonly yes
     restart: always
   node:
-    image: node-alpine
+    image: shtrm/toirus-cp:v1.1
     container_name: node
     depends_on:
       - mongodb
@@ -100,7 +100,7 @@ services:
       # CHANGE ME (must be at least 16 characters)!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       #- GRAYLOG_HTTP_BIND_ADDRESS=192.168.2.16:9002
-      - GRAYLOG_HTTP_PUBLISH_URI=http://localhost:9002/
+      - GRAYLOG_HTTP_PUBLISH_URI=http://gray:9002/
       #- GRAYLOG_HTTP_EXTERNAL_URI=http://192.168.2.16:9002/
       #- GRAYLOG_WEB_ENDPOINT_URI=http//192.168.2.16:9000/api
       # Password: admin
