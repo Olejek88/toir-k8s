@@ -1,0 +1,21 @@
+# Последняя версия docker-compose
+version: '3'
+
+# Создаем общую сеть default для всех контейнеров
+networks:
+  default:
+    driver: bridge
+
+# Создаем отдельные контейнеры
+services:
+  node:
+    image: shtrm/toirus-cp:v1.1
+    container_name: node
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    build:
+        context: toirus-cp-clean
+        dockerfile: docker/toirus-c
+    restart: always    
