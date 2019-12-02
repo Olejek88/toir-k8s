@@ -14,6 +14,9 @@ spec:
   - name: "81"
     port: 81
     targetPort: 81
+  - name: "82"
+    port: 82
+    targetPort: 82
   selector:
     io.kompose.service: nginx
 status:
