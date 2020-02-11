@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  rules:
+    - host: app-k8n.toirus.ru
+      http:
+        paths:
+          - backend:
+              serviceName: nginx
+              servicePort: 81

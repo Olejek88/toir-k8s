@@ -8,119 +8,14 @@ networks:
 
 # Создаем отдельные контейнеры
 services:
-  nginx:
-     image: openresty/openresty:alpine
-     # Показываем наружу 81 порт
-     ports:
-        - "81:80"
-     links:
-        - app
-     volumes:
-        - "../toirus-srv:/var/www/toirus-srv"
-      # Так же линкуем конфиг для nginx
-        - "./conf/nginx:/etc/nginx/conf.d"      
   # Контейнер с веб-приложением
   app:
-     image: shtrm/toirus:v5.3
+     image: shtrm/toirus:v5.5
      ports:
         - "9000:9000"
      build:
-        context: toirus-srv
-        dockerfile: docker/toirus
+        context: ./
+        dockerfile: toirus
         #dockerfile: /Users/mac/work/docker/toirus
-     depends_on: 
-      - db
-      - node
      networks: 
       - default
-     volumes:
-        - "../toirus-srv:/var/www/toirus-srv"
-  # Контейнер с базой данных
-  db:
-    image: mysql:8.0.13
-    #command: --lower_case_table_names=2
-    # Подключаем к общей сети с другими контейнерами
-    networks: 
-      - default
-    # Показываем наружу порт
-    ports:
-      - "3336:3306"
-    # Задаем параметры для инициализации БД
-    environment:
-      # Пароль к БД
-      MYSQL_ROOT_PASSWORD: root8888
-      # Создаваемая по умолчанию бд
-      MYSQL_DATABASE: db73
-    # Линкуем внешнюю папку для хранения БД
-    volumes:
-    - "/usr/local/var/mysql8:/var/lib/mysql"
-    - "./conf/mysql:/etc/mysql/conf.d"
-  # Контейнер с redis
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - "/usr/local/var/db/redis:/data"
-    entrypoint: redis-server --appendonly yes
-    restart: always
-  node:
-    image: shtrm/toirus-cp:v1.1
-    container_name: node
-    depends_on:
-      - mongodb
-    ports:
-      - "3000:3000"
-    build:
-        context: toirus-cp-clean
-        dockerfile: docker/toirus-c
-    restart: always    
-  # MongoDB: https://hub.docker.com/_/mongo/
-  mongodb:
-    image: mongo:3
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
-  elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=localhost
-      - network.host=0.0.0.0
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - 9200:9200
-      - 9300:9300
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-  # Graylog: https://hub.docker.com/r/graylog/graylog/
-  gray:
-    image: graylog/graylog:3.1
-    environment:
-      # CHANGE ME (must be at least 16 characters)!
-      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      #- GRAYLOG_HTTP_BIND_ADDRESS=192.168.2.16:9002
-      - GRAYLOG_HTTP_PUBLISH_URI=http://gray:9002/
-      #- GRAYLOG_HTTP_EXTERNAL_URI=http://192.168.2.16:9002/
-      #- GRAYLOG_WEB_ENDPOINT_URI=http//192.168.2.16:9000/api
-      # Password: admin
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      #- GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-    links:
-      - mongodb:mongo
-      - elastic
-    depends_on:
-      - mongodb
-      - elastic
-    ports:
-      # Graylog web interface and REST API
-      - 9002:9002
-      # Syslog TCP
-      - 1514:1514
-      # Syslog UDP
-      - 1514:1514/udp
-      # GELF TCP
-      - 12201:12201
-      # GELF UDP
-      - 12201:12201/udp

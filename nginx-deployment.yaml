@@ -28,16 +28,17 @@ spec:
         - containerPort: 81
         resources: {}
         volumeMounts:
-        - mountPath: /var/www/toirus-srv
-          name: nginx-hostpath0
-        - mountPath: /etc/nginx/conf.d
-          name: nginx-hostpath1
+           - mountPath: /var/www/toirus/html
+             subPath: "html"
+             name: app-disk
+           - mountPath: /etc/nginx/conf.d/
+             name: config-volume
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /Users/mac/work/toirus-srv
-        name: nginx-hostpath0
-      - hostPath:
-          path: /Users/mac/work/docker/conf/nginx
-        name: nginx-hostpath1
+        - name: app-disk
+          persistentVolumeClaim:
+            claimName: app-disk
+        - name: config-volume
+          configMap:
+            name: conf-nginx
 status: {}

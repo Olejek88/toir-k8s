@@ -33,16 +33,12 @@ spec:
         - containerPort: 3306
         resources: {}
         volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: db-hostpath0
-        - mountPath: /etc/mysql/conf.d
-          name: db-hostpath1
+            - mountPath: "/var/lib/mysql"
+              subPath: "mysql"
+              name: mysql-data
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /usr/local/var/mysql8
-        name: db-hostpath0
-      - hostPath:
-          path: /Users/mac/work/docker/conf/mysql
-        name: db-hostpath1
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-disk
 status: {}

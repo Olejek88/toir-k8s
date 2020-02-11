@@ -32,11 +32,12 @@ spec:
         - containerPort: 6379
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: redis-hostpath0
-      restartPolicy: Always
+            - mountPath: "/var/lib/redis"
+              subPath: "redis"
+              name: redis-disk
       volumes:
-      - hostPath:
-          path: /usr/local/var/db/redis
-        name: redis-hostpath0
+        - name: redis-disk
+          persistentVolumeClaim:
+            claimName: redis-disk
+      restartPolicy: Always
 status: {}

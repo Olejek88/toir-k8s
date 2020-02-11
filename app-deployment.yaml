@@ -22,21 +22,34 @@ spec:
         io.kompose.service: app
     spec:
       containers:
-      - image: shtrm/toirus:v5.3
+      - image: shtrm/toirus:v5.5
         name: app
-        resources: {}
+        env:
+           - name: APP_DB_HOST
+             value: mysql   # cluster dns: mysql
+           - name: APP_REDIS_HOST
+             value: redis   # cluster dns: redis
+           - name: APP_DB_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                  name: mysql-secrets
+                  key: ROOT_PASSWORD
         volumeMounts:
-        - mountPath: /var/www/toirus-srv
-          name: app-hostpath0
-        - mountPath: /usr/local/etc/php-fpm.d/zserver.conf
-          name: php-hostpath0
-          subPath: zserver.conf
+            - mountPath: "/var/www/toirus/html"
+              subPath: "html"
+              name: app-disk
+            - name: config-vol
+              mountPath: "/var/toirus-config/"
+        lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /Users/mac/work/docker/toirus-srv /var/www/toirus/html;\\cp -r /Users/mac/work/docker/conf/app /var/www/toirus/html/common/config/"]
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /Users/mac/work/toirus-srv
-        name: app-hostpath0
-      - hostPath:
-          path: /Users/mac/work/docker/conf/php-fpm
-        name: php-hostpath0
+        - name: app-disk
+          persistentVolumeClaim:
+            claimName: app-disk
+        - name: config-vol
+          configMap:
+            name: conf-toirus
 status: {}
