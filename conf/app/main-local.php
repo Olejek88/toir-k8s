@@ -39,16 +39,15 @@ $config['modules']['selectdb'] = [
     'class' => 'common\modules\selectdb\Module',
 ];
 
-$files = scandir('/var/www/toirus/html/common/config/conf.d');
+$files = scandir('/var/www/toirus-srv/html/common/config/conf.d');
 foreach($files as $file) {
     if ($file !== '.' && $file !== '..') {
         $config['components'] = array_merge(
             $config['components'],
-            require('/var/www/toirus/html/common/config/conf.d/' . $file)
+            require('/var/www/toirus-srv/html/common/config/conf.d/' . $file)
         );
     }
 }
 
 return $config;
-
 

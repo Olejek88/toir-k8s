@@ -3,9 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: app-disk
   labels:
-    app: toirus
+    app: app
 spec:
-  storageClassName: manual
+  storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:

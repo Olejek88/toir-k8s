@@ -14,11 +14,12 @@ kubectl delete pv redis-pv
 kubectl delete pv mysql-pv
 kubectl delete pv app-pv
 
-kubectl apply -f pv-storage-app.yaml
-kubectl apply -f pv-storage-mysql.yaml
-kubectl apply -f pv-storage-redis.yaml
 kubectl apply -f pvc-storage-app.yaml
 kubectl apply -f pvc-storage-mysql.yaml
 kubectl apply -f pvc-storage-redis.yaml
+kubectl apply -f pv-storage-app.yaml
+kubectl apply -f pv-storage-mysql.yaml
+kubectl apply -f pv-storage-redis.yaml
+
 kubectl get pv
 kubectl get pvc
