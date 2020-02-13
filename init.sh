@@ -4,13 +4,14 @@ echo docker login
 docker login
 
 echo build toirus images
-#echo clone source code
-#sudo rm -rf toirus-srv
-#sudo -E git clone https://bitbucket.org/4938x8_tes-team/toirus.git toirus-srv
-#sudo rm -rf toirus-srv/.git toirus-srv/docs toirus-srv/*.md  toirus-srv/Vagrantfile toirus-srv/.bowerrc toirus-srv/*.bat toirus-srv/bitbucket-pipelines.yml
+echo clone source code
+sudo rm -rf toirus-srv
+sudo -E git clone https://bitbucket.org/4938x8_tes-team/toirus.git toirus-srv
+sudo mkdir -p /toirus-srv/logs
+sudo rm -rf toirus-srv/.git toirus-srv/docs toirus-srv/*.md  toirus-srv/Vagrantfile toirus-srv/.bowerrc toirus-srv/*.bat toirus-srv/bitbucket-pipelines.yml
 
 echo build toirus images
-#docker build toirus
+docker build toirus
 docker-compose -f docker-compose.yml build 
 
 echo push image

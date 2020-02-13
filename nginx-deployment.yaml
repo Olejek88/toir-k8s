@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: app
+    name: nginx
   name: nginx
 spec:
   replicas: 1
@@ -10,9 +10,8 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: app
+        name: nginx
     spec:
       containers:
       - image: openresty/openresty:alpine
@@ -26,10 +25,8 @@ spec:
              name: app-disk
            - mountPath: /etc/nginx/conf.d/
              name: config-volume
-        lifecycle:
-            postStart:
-              exec:
-                command: [curl "http://nginx:81/control-panel/create-service?sid=1&hash=997df25747a0297d0ce6f558913661ea"]
+           - mountPath: /etc/nginx/
+             name: config-volume
       restartPolicy: Always
       volumes:
         - name: app-disk

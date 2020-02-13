@@ -82,13 +82,6 @@ kubectl get pods
 
 kubectl get svc
 
-1) docker push shtrm/toirus:v5.3
-2) kubectl exec -it <db-deployment-name> -- /bin/bash
-3) mysql -uroot -proot8888
-4) CREATE DATABASE toir CHARACTER SET utf8 COLLATE utf8_general_ci;
-5) В другой консоли: kubectl exec -it <app-deployment-name> -- sh
-6) cd /var/www/toirus-srv
-7) ./yii migrate --migrationPath=@yii/rbac/migrations
-8) ./yii migrate/up --db=db
+1) init.sh - делает всю магию
 
 

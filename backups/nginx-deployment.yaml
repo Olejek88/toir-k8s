@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert --volumes hostPath
+        kompose.cmd: kompose convert
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
