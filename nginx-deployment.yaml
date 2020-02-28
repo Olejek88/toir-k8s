@@ -14,7 +14,7 @@ spec:
         name: nginx
     spec:
       containers:
-      - image: openresty/openresty:alpine
+      - image: shtrm/nginx:v1.0
         name: nginx
         ports:
         - containerPort: 81
@@ -23,8 +23,12 @@ spec:
            - mountPath: "/var/www/toirus-srv/html"
              subPath: html
              name: app-disk
-           - mountPath: /etc/nginx/
+           - mountPath: "/etc/nginx/conf.d/"
              name: config-volume
+        lifecycle:
+            postStart:
+              exec:      # set actual nginx resolver
+                command: ["/bin/sh", "-c", "/usr/local/bin/setconf.sh"]
       restartPolicy: Always
       volumes:
         - name: app-disk

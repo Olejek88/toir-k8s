@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo stop all
+#/bin/sh ./stop.sh
+
 echo docker login
 docker login --username=shtrm
 
@@ -11,9 +14,9 @@ echo clone source code
 #mkdir -p toirus-app
 #rm -rf toirus-srv/.git toirus-srv/docs toirus-srv/*.md  toirus-srv/Vagrantfile toirus-srv/.bowerrc toirus-srv/*.bat toirus-srv/bitbucket-pipelines.yml
 
-#echo build toirus images
+echo build toirus images
 #docker-compose -f docker-compose.yml build 
-#echo push image toirus
+echo push image toirus
 #docker push shtrm/toirus:v5.5
 
 echo build nginx images
@@ -38,19 +41,19 @@ kubectl create configmap conf-toirus --from-file=conf/app/
 
 /bin/sh ./mkdbsecret.sh
 
-echo * apply DB Secret..
+echo apply DB Secret..
 kubectl apply -f secret.yml
 #kubectl describe secret mysql-secrets
 echo apply DB Persistent Volume..
-kubectl apply -f pvc-storage-app.yaml
-kubectl apply -f pvc-storage-mysql.yaml
-kubectl apply -f pvc-storage-redis.yaml
-kubectl get pv
-
-echo apply DB Persistent Volume Claim..
 kubectl apply -f pv-storage-app.yaml
 kubectl apply -f pv-storage-mysql.yaml
 kubectl apply -f pv-storage-redis.yaml
+kubectl get pv
+
+echo apply DB Persistent Volume Claim..
+kubectl apply -f pvc-storage-app.yaml
+kubectl apply -f pvc-storage-mysql.yaml
+kubectl apply -f pvc-storage-redis.yaml
 kubectl get pvc
 
 # kubectl describe persistentvolumeclaim mysql-data-disk

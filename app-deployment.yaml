@@ -37,7 +37,7 @@ spec:
         lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "cp -r /var/toirus-base/html/. /var/www/toirus-srv/html;\\cp -r /var/toirus-config/. /var/www/toirus-srv/html/common/config/;\\mkdir -p /var/www/toirus-srv/html/logs;\\echo -e \"0\" | /var/www/toirus-srv/html/init"]
+                command: ["/bin/sh", "-c", "cp -r /var/toirus-base/html/. /var/www/toirus-srv/html;\\cp -r /var/toirus-config/. /var/www/toirus-srv/html/common/config/;\\mkdir -p /var/www/toirus-srv/html/logs;\\echo -e \"0\" | /var/www/toirus-srv/html/init;\\chown -R www-data:www-data /var/www/toirus-srv/html;\\cd /var/www/toirus-srv/html;\\chmod +x setparse.sh;\\./setparse.sh"]
       restartPolicy: Always
       volumes:
         - name: app-disk

@@ -64,7 +64,6 @@ RUN apt-get -y install dnsutils
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && ln -s $(composer config --global home) /root/composer
 
@@ -72,8 +71,8 @@ ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1
 ENV PHP_VERSION=7.3
 
 RUN  mkdir -p /Users/mac/work/docker/toirus-base
-#WORKDIR /Users/mac/work/docker
 COPY toirus-srv /var/toirus-base/html
+COPY setparse.sh /var/toirus-base/html
 
 RUN cd /var/toirus-base/html && php /usr/local/bin/composer install
 

@@ -1,6 +1,7 @@
 FROM openresty/openresty:alpine
 LABEL maintainer "olejek - https://github.com/Olejek88"
-COPY setconf.sh /etc/nginx/setconf
+
+COPY setconf.sh /usr/local/bin
 
 # Install libraries
 RUN apk update && apk add git \
@@ -8,8 +9,9 @@ RUN apk update && apk add git \
             iputils \
             mc;
 
-RUN rm -rf /etc/nginx/conf.d /etc/nginx/nginx.conf /var/cache/apk/*; \                                                                                                                                      
-    chmod +x /etc/nginx/setconf; \
+RUN rm -rf /etc/nginx/conf.d /etc/nginx/nginx.conf /var/cache/apk/*; \
+    touch /etc/nginx/common.conf; \
+    chmod +x /usr/local/bin/setconf.sh; \
     mkdir -p /var/www/logs /var/www/default/html /var/lib/nginx/temp;    
 
 #COPY conf/nginx-default/*.conf /etc/nginx/
