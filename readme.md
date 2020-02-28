@@ -6,8 +6,6 @@
 <img src="toirus-k8s.png">
 Базовый дистрибутив состоит из:
 
-docker/docker2 - файлы сборки контейнера приложения с установкой нужных пакетов и расширений
-
 app-deployment - контейнера приложения Тоирус на базе Yii2 фреймворка
 
 app-service - сервиса приложения (php-fpm) 9002 порт
@@ -54,34 +52,8 @@ graylog/gray-service - сервис Graylog (порты 9000)
 
 для docker (снаружи директории docker с дистрибутивом)
 
-1) docker-compose -f docker/docker-compose.yml up -d
-
-docker exec -it docker_db_1 bash
-
-docker-compose -f docker/docker-compose.yml down
-
-перечень 
-
-docker images
-
-docker-compose -f docker/docker-compose.yml build
-
-для kubernetes
-
-kubectl apply -f <имя_сервиса_или_деплоймент>.yaml
-
-уничтожить
-
-kubectl delete svc/service_name
-
-kubectl delete -n default deployment <имя деплоймента>
-
-просмотреть текущие запущенные
-
-kubectl get pods
-
-kubectl get svc
-
 1) init.sh - делает всю магию
 
-
+2) create_db.sh - разворачивает в кластере  базу
+ 
+3) start/restart и прочие скрипты перезапускают часть подов/сервисов и volumes

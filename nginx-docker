@@ -1,0 +1,26 @@
+FROM openresty/openresty:alpine
+LABEL maintainer "olejek - https://github.com/Olejek88"
+COPY setconf.sh /etc/nginx/setconf
+
+# Install libraries
+RUN apk update && apk add git \
+	    curl \
+            iputils \
+            mc;
+
+RUN rm -rf /etc/nginx/conf.d /etc/nginx/nginx.conf /var/cache/apk/*; \                                                                                                                                      
+    chmod +x /etc/nginx/setconf; \
+    mkdir -p /var/www/logs /var/www/default/html /var/lib/nginx/temp;    
+
+#COPY conf/nginx-default/*.conf /etc/nginx/
+#COPY conf/nginx/*.conf /etc/nginx
+#COPY www    /var/www
+WORKDIR     /etc/nginx/
+LABEL version="1.0"
+
+# Execute the script to set internal dns resolver:
+# ENTRYPOINT ["/bin/ash", "setconf.sh"]  # must be called from pod post init
+
+STOPSIGNAL SIGTERM
+EXPOSE 80 
+CMD ["nginx", "-g", "daemon off;"]

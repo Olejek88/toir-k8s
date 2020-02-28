@@ -1,38 +1,35 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: db
   name: db
+  labels:
+    app: db
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
+  selector:
+    matchLabels:
+      app: db
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: db
+        app: db
     spec:
       containers:
-      - env:
-        - name: MYSQL_DATABASE
-          value: db73
-        - name: MYSQL_ROOT_PASSWORD
-          value: root8888
-        image: mysql:8.0.13
-        name: db
-        ports:
-        - containerPort: 3306
-        resources: {}
-        volumeMounts:
+        - name: db
+          image: mariadb:10.4
+          ports:
+            - containerPort: 3306
+          volumeMounts:
             - mountPath: "/var/lib/mysql"
               subPath: "mysql"
               name: mysql-data
-      restartPolicy: Always
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: ROOT_PASSWORD
       volumes:
         - name: mysql-data
           persistentVolumeClaim:
             claimName: mysql-disk
-status: {}

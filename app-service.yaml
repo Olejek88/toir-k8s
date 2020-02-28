@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: app
   labels:
-    io.kompose.service: app
+    app: app
 spec:
   selector:
     app: app
@@ -11,6 +11,6 @@ spec:
   - protocol: TCP
     port: 9000
   selector:
-    io.kompose.service: app
+    app: app
 status:
   loadBalancer: {}

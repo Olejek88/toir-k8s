@@ -8,6 +8,9 @@ spec:
   strategy:
     type: Recreate
   template:
+    metadata:
+      labels:
+        name: redis
     spec:
       containers:
       - command:

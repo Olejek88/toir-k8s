@@ -1,0 +1,20 @@
+# Последняя версия docker-compose
+version: '3'
+
+# Создаем общую сеть deafult для всех контейнеров
+networks:
+  default:
+    driver: bridge
+
+# Создаем отдельные контейнеры
+services:
+  # Контейнер с веб-приложением
+  app:
+     image: shtrm/nginx:v1.0
+     ports:
+        - "81:81"
+     build:
+        context: ./
+        dockerfile: nginx-docker
+     networks: 
+      - default

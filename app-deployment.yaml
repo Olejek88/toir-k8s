@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: app
+    app: app
   name: app
 spec:
   replicas: 1
@@ -13,7 +13,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: app
+        app: app
     spec:
       containers:
       - image: shtrm/toirus:v5.5
